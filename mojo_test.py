@@ -77,6 +77,10 @@ if client_box_id is not None:
     if fetch_observing_devices_r.status_code == 200:
         print("Fetching List of Observing Devices Successful")
         observing_devices_json = json.loads(fetch_observing_devices_r.text)
-        print(("There are %d devices observing client %s") % (len(observing_devices_json[0]), client_name))
+        print(("There are %d devices observing client %s") % (len(observing_devices_json), client_name))
+        device_list = observing_devices_json
+        for i in range(len(device_list)):
+            print(("Device: %s Box ID: %d Signal Strength: %d%%") % (device_list[i]["name"], device_list[i]["boxId"],
+                                                                     100 + device_list[i]["signalStrength"]))
 else:
     print("Client Box ID Required")
