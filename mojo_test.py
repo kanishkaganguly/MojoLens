@@ -134,14 +134,35 @@ print()
 mwm_image_url = "/new/webservice"
 fetch_image_url = "/sfiles"
 fetch_image_url_parsed = mwm_url + mwm_image_url + fetch_image_url
-print(fetch_image_url_parsed + "?id=" + str(floor_image_key))
 fetch_image_r = rq.request(method="get", url=fetch_image_url_parsed, cookies=mwm_cookies, headers=header,
                            params={"id": floor_image_key})
 if fetch_image_r.status_code == 200:
     print("Fetch Floor Image Successful")
     img_arr = np.fromstring(fetch_image_r.content, np.uint8)
     floor_img = cv2.imdecode(img_arr, cv2.IMREAD_ANYCOLOR)
-    cv2.imshow("Floor", floor_img)
-    cv2.waitKey(0)
+    h, w, _ = floor_img.shape
+    print(h, w)
 else:
     print("Fetch Floor Image Failed")
+print()
+
+# Get managed devices locations
+fetch_placement_url = "/layouts/placement"
+fetch_placement_url_parsed = mwm_url + mwm_location_url + fetch_placement_url
+fetch_placement_r = rq.request(method="get", url=fetch_placement_url_parsed, cookies=mwm_cookies, headers=header,
+                               params={"locationid": fourth_floor_id})
+if fetch_placement_r.status_code == 200:
+    fetch_placement_json = json.loads(fetch_placement_r.text)
+    print("Fetched %d Sensor Placements" % len(fetch_placement_json["placedSensors"]))
+    for i in range(len(fetch_placement_json["placedSensors"])):
+        device_name = fetch_placement_json["placedSensors"][i]["device"]["name"]
+        device_box_id = fetch_placement_json["placedSensors"][i]["device"]["boxId"]
+        x_coord = fetch_placement_json["placedSensors"][i]["coOrdinates"]["xCordinate"]
+        y_coord = fetch_placement_json["placedSensors"][i]["coOrdinates"]["yCordinate"]
+        print(("[Device: %s] [Box ID: %02d] [Location: (%02f,%02f)]") % (device_name, device_box_id, x_coord, y_coord))
+
+        cv2.circle(floor_img, (int(x_coord / 0.480), int(y_coord / 0.480)), 5, (0, 0, 255), -1)
+
+cv2.imshow("Floor", floor_img)
+k = cv2.waitKey(0)
+cv2.destroyAllWindows()
