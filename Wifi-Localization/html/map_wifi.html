@@ -1,0 +1,207 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Demo illustring WiFi propagation loss in indoor building</title><meta name="generator" content="MATLAB 7.9"><meta name="date" content="2011-11-10"><meta name="m-file" content="map_wifi"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h1>Demo illustring WiFi propagation loss in indoor building</h1><pre class="codeinput">clear,close <span class="string">all</span>
+nb_pts                   = 100;
+nr                       = 2;
+
+option.TX                = 0;
+option.RX                = 0;
+option.path              = 0;
+
+
+
+flp                      = load_flp(<span class="string">'norwich01.flp'</span>);
+
+<span class="comment">%flp                      = load_flp('simple2.flp');</span>
+
+
+temp                     = flp.geom.planes([1 , 4 , 7] , :);
+xmin                     = min(temp(:));
+xmax                     = max(temp(:));
+temp                     = flp.geom.planes([2 , 5 , 8] , :);
+ymin                     = min(temp(:));
+ymax                     = max(temp(:));
+temp                     = flp.geom.planes([3 , 6 , 9] , :);
+zmin                     = min(temp(:));
+zmax                     = max(temp(:));
+
+
+vectx                    = (xmin:(xmax-xmin)/(nb_pts-1):xmax);
+vecty                    = (ymin:(ymax-ymin)/(nb_pts-1):ymax);
+
+
+[X , Y]                  = meshgrid(vectx , vecty);
+Z                        = ((zmax-zmin)/2)*ones(nb_pts , nb_pts);
+RX                       = [X(:) , Y(:) , Z(:)]';
+
+figure(1)
+
+plot_flp(flp , option);
+title(<span class="string">'select/add beacon'' positions by left click (right click for the last one)'</span>, <span class="string">'fontsize'</span> , 12)
+
+hold <span class="string">on</span>
+[x , y]                 = getpts;
+temp                    = (zmax-zmin)/2;
+flp.info.TXpoint        = [x' ; y' ; temp(: , ones(1 , length(x)))];
+
+<span class="comment">% flp.info.TXpoint         = [6000 ; 6000 ; 500];</span>
+
+
+plot(flp.info.TXpoint(1 , :) , flp.info.TXpoint(2 , :) , <span class="string">'c*'</span>);
+drawnow
+hold <span class="string">off</span>
+
+
+rs_amp                  = total_power3(flp.info.TXpoint , RX , flp.geom.planes , flp.geom.material , flp.info.fc , nr);
+
+
+figure(2)
+imagesc(vectx , vecty , 20*log10(reshape(sum(rs_amp , 1) , nb_pts, nb_pts)));
+hold <span class="string">on</span>
+plot_flp(flp);
+title(sprintf(<span class="string">'top view (x - y), nr = %d'</span>,nr))
+<span class="comment">%title('three dimensional view')</span>
+xlabel(<span class="string">'x in pixels'</span>)
+ylabel(<span class="string">'y in pixels'</span>)
+zlabel(<span class="string">'z in pixles'</span>)
+axis <span class="string">xy</span>
+colorbar
+</pre><img vspace="5" hspace="5" src="map_wifi_01.png" alt=""> <img vspace="5" hspace="5" src="map_wifi_02.png" alt=""> <p class="footer"><br>
+      Published with MATLAB&reg; 7.9<br></p></div><!--
+##### SOURCE BEGIN #####
+%% Demo illustring WiFi propagation loss in indoor building
+
+
+
+clear,close all
+nb_pts                   = 100;
+nr                       = 2;
+
+option.TX                = 0;
+option.RX                = 0;
+option.path              = 0;
+
+
+
+flp                      = load_flp('norwich01.flp');
+
+%flp                      = load_flp('simple2.flp');
+
+
+temp                     = flp.geom.planes([1 , 4 , 7] , :);
+xmin                     = min(temp(:));
+xmax                     = max(temp(:));
+temp                     = flp.geom.planes([2 , 5 , 8] , :);
+ymin                     = min(temp(:));
+ymax                     = max(temp(:));
+temp                     = flp.geom.planes([3 , 6 , 9] , :);
+zmin                     = min(temp(:));
+zmax                     = max(temp(:));
+
+
+vectx                    = (xmin:(xmax-xmin)/(nb_pts-1):xmax);
+vecty                    = (ymin:(ymax-ymin)/(nb_pts-1):ymax);
+
+
+[X , Y]                  = meshgrid(vectx , vecty);
+Z                        = ((zmax-zmin)/2)*ones(nb_pts , nb_pts);
+RX                       = [X(:) , Y(:) , Z(:)]';
+
+figure(1)
+
+plot_flp(flp , option);
+title('select/add beacon'' positions by left click (right click for the last one)', 'fontsize' , 12)
+
+hold on
+[x , y]                 = getpts;
+temp                    = (zmax-zmin)/2;
+flp.info.TXpoint        = [x' ; y' ; temp(: , ones(1 , length(x)))];
+
+% flp.info.TXpoint         = [6000 ; 6000 ; 500];
+
+
+plot(flp.info.TXpoint(1 , :) , flp.info.TXpoint(2 , :) , 'c*');
+drawnow
+hold off
+
+
+rs_amp                  = total_power3(flp.info.TXpoint , RX , flp.geom.planes , flp.geom.material , flp.info.fc , nr);
+
+
+figure(2)
+imagesc(vectx , vecty , 20*log10(reshape(sum(rs_amp , 1) , nb_pts, nb_pts)));
+hold on
+plot_flp(flp);
+title(sprintf('top view (x - y), nr = %d',nr))
+%title('three dimensional view')
+xlabel('x in pixels')
+ylabel('y in pixels')
+zlabel('z in pixles')
+axis xy
+colorbar
+
+
+##### SOURCE END #####
+--></body></html>
