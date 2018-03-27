@@ -24,8 +24,8 @@ end
 
 DistSum = sum(Dist, 3);
 
-figure,
-imshow(I);
+% figure,
+% imshow(I);
 hold on;
 imagesc(DistSum);
 colormap jet
@@ -39,8 +39,8 @@ for count = 1:NumRouters
     Mask(:,:,:,count) = repmat((Dist(:,:,count) > RSSIObs(count) - ErrorCov/2) & (Dist(:,:,count) <= RSSIObs(count)+ErrorCov/2),1,1,1);
 end
 
-figure,
-montage(Mask);
+% figure,
+% montage(Mask);
 % imshow(Mask(:,:,1));
 
 MaskAll = sum(Mask, 4);
