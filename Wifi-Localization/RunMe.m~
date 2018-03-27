@@ -4,6 +4,8 @@
 clc; clear; close all;
 
 I = imread('out_img.jpg');
+figure,
+imagesc(I);
 
 NumRouters = 4;
 RSSI = zeros(size(I,1),size(I,2));
@@ -13,8 +15,7 @@ figure,
 imagesc(I);
 % colormap jet
 
-load('Data.mat');
-% [x, y] = ginput(NumRouters);
+[x, y] = ginput(NumRouters);
 [C, R] = meshgrid(1:size(RSSI,2), 1:size(RSSI,1));
 
 Dist = zeros(size(RSSI,1), size(RSSI,2), NumRouters);
@@ -25,14 +26,12 @@ end
 DistSum = sum(Dist, 3);
 
 figure,
-imshow(I);
-hold on;
+imshow(
 imagesc(DistSum);
 colormap jet
-alpha(0.5);
 
-RSSIObs = [-50, -70, -150, -100];
-ErrorCov = 30;
+RSSIObs = [-50, -50, -50, -50];
+ErrorCov = 20;
 
 %%
 for count = 1:NumRouters
@@ -46,8 +45,4 @@ montage(Mask);
 MaskAll = sum(Mask, 4);
 
 figure,
-imshow(I);
-hold on;
 imagesc(MaskAll);
-alpha(0.5);
-colormap jet
