@@ -78,8 +78,10 @@ else:
 
 # Fetch client by username
 search_filter = {
-    "property": "username",
-    "value"   : ["chahat"],
+#    "property": "username",
+#    "value"   : ["chahat"],
+    "property": "devicename",
+    "value"   : ["dronelaptop"],
     "operator": "="
 }
 fetch_client_url_parsed = mwm_url + webservice_url + webservice_version_url + mwm_devices_url + \
