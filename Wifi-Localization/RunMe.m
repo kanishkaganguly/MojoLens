@@ -9,8 +9,8 @@ NumRouters = 4;
 RSSI = zeros(size(I,1),size(I,2));
 
 I = imread('out_img.jpg');
-figure,
-imagesc(I);
+%figure,
+%imagesc(I);
 % colormap jet
 
 load('Data.mat');
@@ -26,12 +26,13 @@ DistSum = sum(Dist, 3);
 
 % figure,
 % imshow(I);
+
 hold on;
 imagesc(DistSum);
 colormap jet
 alpha(0.5);
 
-RSSIObs = [-50, -70, -150, -100];
+RSSIObs = [-70, -20, -180, -120];
 ErrorCov = 30;
 
 %%
