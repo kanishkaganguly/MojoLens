@@ -4,9 +4,18 @@
 - Kanishka Ganguly
 - Chahat Deep Singh
 - Nitin J Sanket
+***
+### Mojo API:
+- Run `mojo_test.py`
 
+### WiFi Localization:
+- Run `Wifi-Localization/RunMe.m`
+
+### Web Application:
+- HTML files are present in `WebApp` folder. To run the web application, `git pull` the current repository and open `index.html` in your browser. 
 ***
 
+## Localization:
 The following data is based on AV William building (Left wing) which is equipped with Mojo Routers.
 
 - All Router RSSI:
