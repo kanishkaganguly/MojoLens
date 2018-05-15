@@ -12,7 +12,7 @@
 - Run `Wifi-Localization/RunMe.m`
 
 ### Web Application:
-- HTML files are present in `WebApp` folder. To run the web application, `git pull` the current repository and open `index.html` in your browser. 
+- HTML files are present in `WebApp` folder. To run the web application, `git pull` the current repository and open `WebApp/index.html` in your browser. 
 ***
 
 ## Localization:
