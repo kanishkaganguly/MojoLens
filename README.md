@@ -9,9 +9,12 @@
 
 The following data is based on AV William building (Left wing) which is equipped with Mojo Routers.
 
-![Heat Map](Output/AVWHeatMap.jpg)
-![Heat Map](Output/Floor_Mojo_4Floor.png)
+- All Router RSSI:
+![Indivdual RSSI](Output/Floor_Mojo_4Floor.png)
+- Wifi Localization:
 ![Heat Map](Output/Wifi-Localization-HeatMap.jpg)
+- Heat Map:
+![Heat Map](Output/AVWHeatMap.jpg)
 
 - [Terminal Output](Output/term_output.txt):
 
