@@ -6,6 +6,13 @@
 - Nitin J Sanket
 ***
 ### Mojo API:
+##### Depedencies:
+- `json`
+- `opencv`
+- `numpy`
+- `requests`
+
+Then,
 - Run `mojo_test.py`
 
 ### WiFi Localization:
