@@ -13,10 +13,10 @@
 - `requests`
 
 Then,
-- Run `mojo_test.py`
+- Run `mojo_test.py` using `Python3`
 
 ### WiFi Localization:
-- Run `Wifi-Localization/RunMe.m`
+- Run `matlab`script: `Wifi-Localization/RunMe.m`
 
 ### Web Application:
 - HTML files are present in `WebApp` folder. To run the web application, `git pull` the current repository and open `WebApp/index.html` in your browser. 
